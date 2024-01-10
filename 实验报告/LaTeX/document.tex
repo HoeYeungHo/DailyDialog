@@ -28,7 +28,7 @@
 % 字体设置
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
-\setmonofont{Times New Roman}
+% \setmonofont{Times New Roman}
 \setCJKmainfont{SimSun}[BoldFont = SourceHanSerifCN-Bold]
 \setCJKfamilyfont{heiti}{SimHei}
 \renewcommand{\heiti}{\CJKfamily{heiti}}
@@ -52,18 +52,6 @@
 % 脚注
 %% 带圆圈数字
 \usepackage{pifont}
-\renewcommand\thefootnote{\ding{\numexpr171+\value{footnote}}}
-% 脚注标号不上标
-% \usepackage{xpatch}
-% \makeatletter
-% \xpatchcmd\@makefntext
-% {{\hss\@makefnmark}}
-% {{\hss\@makefnmark@nosuperscript}\space}
-% {}{\fail}
-% \def\@makefnmark@nosuperscript{\hbox{\normalfont\@thefnmark}}
-% \makeatother
-% \def\@makefnmark@nosuperscript{\lower .3ex \hbox{\normalfont\@thefnmark}}
-% \renewcommand\thefootnote{\fnsymbol{footnote}}
 %% 字体大小
 \renewcommand{\footnotesize}{\zihao{-5}}
 
@@ -101,8 +89,11 @@
 \usepackage{adjustbox}
 
 \begin{document}
+	\renewcommand{\thefootnote}{※}
 	\input{section/Abstract}
 	\thispagestyle{plain}
+	\renewcommand\thefootnote{\ding{\numexpr171+\value{footnote}}}
+	\setcounter{footnote}{0}
 	\input{section/C1}
 	\input{section/C2}
 	\input{section/C3}
