@@ -1,0 +1,127 @@
+%-*- coding: UTF-8 -*-
+
+\documentclass[UTF8, a4paper, 12pt]{ctexart} 
+
+\title{DailyDialog对话情感识别实验报告}
+\author{计硕2302 何浩扬}
+
+% 页面设置
+\usepackage[hmargin = 2.3cm, vmargin = 2.5cm]{geometry}
+\linespread{1.48}  % 行间距
+\setlength{\parskip}{2pt}  % 段间距
+
+% 页眉页脚
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % 清除所有页眉页脚
+\fancyfoot[C]{\thepage/\pageref{LastPage}} % 设置右页脚为页码
+\fancyhead[R]{\kaishu\nouppercase\leftmark} % 设置右页眉为章节标题
+% \fancyhead[L]{\kaishu{计算机视觉领域中安全与隐私问题——以对抗攻击为例}} % 设置右页眉为章节标题
+\fancypagestyle{plain}{%
+	\fancyhf{}%
+	\fancyfoot[C]{\thepage/\pageref{LastPage}}%
+	\renewcommand{\headrulewidth}{0pt}% 取消页眉的横线
+}
+
+
+% 字体设置
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setmonofont{Times New Roman}
+\setCJKmainfont{SimSun}[BoldFont = SourceHanSerifCN-Bold]
+\setCJKfamilyfont{heiti}{SimHei}
+\renewcommand{\heiti}{\CJKfamily{heiti}}
+\setCJKfamilyfont{kaishu}{KaiTi}
+\renewcommand{\kaishu}{\CJKfamily{kaishu}}
+
+% 章节标题格式
+\CTEXsetup[format = {\centering\heiti\zihao{-3}}]{section}
+\CTEXsetup[format = {\heiti\zihao{-4}}]{subsection}
+\CTEXsetup[format = {\heiti\zihao{-4}}]{subsubsection}
+
+% 参考文献
+\bibliographystyle{gbt7714-numerical}
+\usepackage[super, square, sort&compress]{natbib}
+
+% 交叉引用
+\usepackage{hyperref}
+\usepackage{nameref}
+% \hypersetup{pdfborder = 0 0 0}  % 不显示边框
+
+% 脚注
+%% 带圆圈数字
+\usepackage{pifont}
+\renewcommand\thefootnote{\ding{\numexpr171+\value{footnote}}}
+% 脚注标号不上标
+% \usepackage{xpatch}
+% \makeatletter
+% \xpatchcmd\@makefntext
+% {{\hss\@makefnmark}}
+% {{\hss\@makefnmark@nosuperscript}\space}
+% {}{\fail}
+% \def\@makefnmark@nosuperscript{\hbox{\normalfont\@thefnmark}}
+% \makeatother
+% \def\@makefnmark@nosuperscript{\lower .3ex \hbox{\normalfont\@thefnmark}}
+% \renewcommand\thefootnote{\fnsymbol{footnote}}
+%% 字体大小
+\renewcommand{\footnotesize}{\zihao{-5}}
+
+% 图片
+\usepackage{graphicx}
+\setlength{\abovecaptionskip}{0.cm}
+
+% 列表距离设置
+\usepackage{enumitem}
+\setenumerate{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+\setdescription{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+
+\setlength{\abovecaptionskip}{2pt} %默认0pt
+\setlength{\belowcaptionskip}{5pt}%默认10pt
+
+% 数学公式
+%% 必要的包
+\usepackage{amssymb}
+\usepackage{amsmath}
+\numberwithin{figure}{section}
+
+% \usepackage{soul}
+\usepackage{ulem}
+
+% 表格
+\usepackage{booktabs}  % 三线表
+\usepackage{multirow}  % 合并单元格
+\usepackage{makecell}  % 单元格换行
+\usepackage{threeparttable}  % 表注
+\usepackage{rotfloat}
+\usepackage{lscape}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\usepackage{adjustbox}
+
+\begin{document}
+	\input{section/Abstract}
+	\thispagestyle{plain}
+	\input{section/C1}
+	\input{section/C2}
+	\input{section/C3}
+	\input{section/C4}
+	\newpage
+	\pagestyle{plain}
+	\addcontentsline{toc}{section}{参考文献}
+	\bibliography{reference}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+

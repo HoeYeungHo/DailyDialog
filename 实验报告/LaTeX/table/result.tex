@@ -1,0 +1,32 @@
+\begin{table}[!ht]
+	\centering
+	\zihao{-5}
+	\caption{实验结果汇总}
+	\label{table:result}
+	\begin{tabular}{ccccccccc}
+		\toprule
+		\textbf{影响因素} & \textbf{BERT} & \textbf{循环结构} & \textbf{线性层数量} & \textbf{Dropout} & \textbf{平衡因子$\alpha$} & \textbf{ALLACC} & \textbf{EmotionACC} & \textbf{ActACC} \\ \midrule
+		\multirowcell{4}{预训练BERT模型} & 全参 & LSTM & 单层 & 0 & 1 & \underline{0.5470} & \underline{0.6310} & \underline{0.4630} \\ 
+		~ & 冻结 & LSTM & 单层 & 0 & 1 & 0.5191 & 0.6059 & 0.4323 \\ 
+		~ & 重置 & LSTM & 单层 & 0 & 1 & 0.3026 & 0.3485 & 0.2567 \\ 
+		~ & Large+冻结 & LSTM(2048) & 单层 & 0 & 1 & 0.5050 & 0.5847 & 0.4253 \\ \midrule
+		\multirowcell{4}{平衡因子$\alpha$} & 全参 & LSTM & 单层 & 0 & 0 & - & 0.6234 & - \\ 
+		~ & 全参 & LSTM & 单层 & 0 & 0.5 & 0.5083 & \underline{0.6333} & 0.3833 \\ 
+		~ & 全参 & LSTM & 单层 & 0 & 5 & 0.5400 & 0.6128 & \underline{0.4673} \\ 
+		~ & 全参 & LSTM & 单层 & 0 & $\infty$ & - & - & 0.4668 \\ \midrule
+		\multirowcell{4}{bidirectional} & 全参 & BiLSTM & 单层 & 0 & 0.5 & 0.5310 & 0.6302 & 0.4318 \\ 
+		~ & 全参 & BiLSTM & 单层 & 0 & 1 & 0.5193 & 0.6143 & 0.4243 \\ 
+		~ & 全参 & BiLSTM(单层） & 单层 & 0 & 0.5 & 0.5539 & \underline{0.6591} & 0.4488 \\ 
+		~ & 全参 & BiLSTM(单层） & 单层 & 0 & 1 & 0.5882 & 0.6538 & \underline{0.5226} \\ \midrule
+		\multirowcell{5}{线性层数量\\与Dropout} & 全参 & LSTM & 双层(1024, 512) & 0 & 0.5 & 0.5392 & 0.6279 & 0.4506 \\ 
+		~ & 全参 & Bi-LSTM(2048) & 双层(4096, 1024) & 0 & 0.5 & 0.5286 & 0.6203 & 0.4368 \\ 
+		~ & 全参 & Bi-LSTM(2048) & 双层(4096, 1024) & 0.1 & 0.5 & 0.5201 & 0.6211 & 0.4191 \\ 
+		~ & 全参 & Bi-LSTM(2048) & 双层(4096, 1024) & 0.5 & 0.5 & 0.5271 & 0.6226 & 0.4315 \\ 
+		~ & 全参 & Bi-LSTM(2048) & 双层(4096, 1024) & 0.7 & 0.5 & 0.5290 & 0.6249 & 0.4331 \\ \midrule
+		\multirowcell{2}{循环结构} & 全参 & RNN & 单层 & 0 & 1 & \underline{0.5863} & \underline{0.6454} & 0.5272 \\ 
+		~ & 全参 & GRU & 单层 & 0 & 1 & 0.5220 & 0.6203 & 0.4237 \\ \midrule
+		\multirowcell{3}{对话上下文} & 全参 & None & 单层 & 0 & 0.5 & 0.6990 & \underline{\textbf{0.7099}} & 0.6881 \\ 
+		~ & 全参 & None & 单层 & 0 & 1 & \underline{\textbf{0.7140}} & \underline{\textbf{0.7099}} & \underline{\textbf{0.7180}} \\ 
+		~ & Large+冻结 & None & 单层 & 0 & 0.5 & 0.5801 & 0.7016 & 0.4585 \\ \bottomrule
+	\end{tabular}
+\end{table}
