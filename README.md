@@ -34,7 +34,7 @@
 
 #### 1. 简单循环网络
 
-令向量 $ \boldsymbol     {x}_t \in \mathbb{R}^M $ 表示在时刻 $ t $ 时网络的输入， $ \boldsymbol     {h}_t \in \mathbb{R}^D $ 表示隐藏层状态（即隐藏层神经元活性值），则 $ \boldsymbol     {h}_t $ 不仅和当前时刻的输入 $ \boldsymbol     {x}_t $ 相关，也和上一个时刻的隐藏层状态 $ \boldsymbol     {h}_{t-1} $ 相关。简单循环网络在时刻 $ t $ 的更新公式为：隐藏层净输入 $ \boldsymbol      z_{t}=\boldsymbol      U\boldsymbol     {h}_{t-1}+\boldsymbol      W\boldsymbol     {x}_{t}+\boldsymbol     {b} $ ，隐藏层状态 $ \boldsymbol      h_t=f(\boldsymbol      z_t)=f(\boldsymbol      U\boldsymbol     {h}_{t-1}+\boldsymbol      W\boldsymbol     {x}_{t}+\boldsymbol     {b}) $ 。其中， $ \boldsymbol      U \in \mathbb{R}^{D \times D} $ 为状态－状态权重矩阵， $ \boldsymbol     {W} \in \mathbb{R}^{D \times M} $ 为状态－输入权重矩阵， $ \boldsymbol     {b} \in \mathbb{R}^D $ 为偏置向量， $ f(\cdot) $ 是非线性激活函数，通常为Tanh函数（PyTorch中默认）或Logistic函数。简单循环网络如图所示。
+令向量 $\boldsymbol     {x}_t \in \mathbb{R}^M$ 表示在时刻 $ t $ 时网络的输入， $ \boldsymbol     {h}_t \in \mathbb{R}^D $ 表示隐藏层状态（即隐藏层神经元活性值），则 $ \boldsymbol     {h}_t $ 不仅和当前时刻的输入 $ \boldsymbol     {x}_t $ 相关，也和上一个时刻的隐藏层状态 $ \boldsymbol     {h}_{t-1} $ 相关。简单循环网络在时刻 $ t $ 的更新公式为：隐藏层净输入 $ \boldsymbol      z_{t}=\boldsymbol      U\boldsymbol     {h}_{t-1}+\boldsymbol      W\boldsymbol     {x}_{t}+\boldsymbol     {b} $ ，隐藏层状态 $ \boldsymbol      h_t=f(\boldsymbol      z_t)=f(\boldsymbol      U\boldsymbol     {h}_{t-1}+\boldsymbol      W\boldsymbol     {x}_{t}+\boldsymbol     {b}) $ 。其中， $ \boldsymbol      U \in \mathbb{R}^{D \times D} $ 为状态－状态权重矩阵， $ \boldsymbol     {W} \in \mathbb{R}^{D \times M} $ 为状态－输入权重矩阵， $ \boldsymbol     {b} \in \mathbb{R}^D $ 为偏置向量， $ f(\cdot) $ 是非线性激活函数，通常为Tanh函数（PyTorch中默认）或Logistic函数。简单循环网络如图所示。
 
 ![RNN](实验报告/markdown/结构图/RNN.svg)
 
