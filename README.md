@@ -34,7 +34,7 @@
 
 #### 1. 简单循环网络
 
-令向量 $\boldsymbol     {x}_t \in \mathbb{R}^M$ 表示在时刻 $ t $ 时网络的输入， $ \boldsymbol     {h}_t \in \mathbb{R}^D $ 表示隐藏层状态（即隐藏层神经元活性值），则 $ \boldsymbol     {h}_t $ 不仅和当前时刻的输入 $ \boldsymbol     {x}_t $ 相关，也和上一个时刻的隐藏层状态 $ \boldsymbol     {h}_{t-1} $ 相关。简单循环网络在时刻 $ t $ 的更新公式为：隐藏层净输入 $ \boldsymbol      z_{t}=\boldsymbol      U\boldsymbol     {h}_{t-1}+\boldsymbol      W\boldsymbol     {x}_{t}+\boldsymbol     {b} $ ，隐藏层状态 $ \boldsymbol      h_t=f(\boldsymbol      z_t)=f(\boldsymbol      U\boldsymbol     {h}_{t-1}+\boldsymbol      W\boldsymbol     {x}_{t}+\boldsymbol     {b}) $ 。其中， $ \boldsymbol      U \in \mathbb{R}^{D \times D} $ 为状态－状态权重矩阵， $ \boldsymbol     {W} \in \mathbb{R}^{D \times M} $ 为状态－输入权重矩阵， $ \boldsymbol     {b} \in \mathbb{R}^D $ 为偏置向量， $ f(\cdot) $ 是非线性激活函数，通常为Tanh函数（PyTorch中默认）或Logistic函数。简单循环网络如图所示。
+令向量$\boldsymbol     {x}_t \in \mathbb{R}^M$表示在时刻$t$时网络的输入，$\boldsymbol     {h}_t \in \mathbb{R}^D$表示隐藏层状态（即隐藏层神经元活性值），则$\boldsymbol     {h}_t$不仅和当前时刻的输入$\boldsymbol     {x}_t$相关，也和上一个时刻的隐藏层状态$\boldsymbol     {h}_{t-1}$相关。简单循环网络在时刻$t$的更新公式为：隐藏层净输入$\boldsymbol      z_{t}=\boldsymbol      U\boldsymbol     {h}_{t-1}+\boldsymbol      W\boldsymbol     {x}_{t}+\boldsymbol     {b}$，隐藏层状态$\boldsymbol      h_t=f(\boldsymbol      z_t)=f(\boldsymbol      U\boldsymbol     {h}_{t-1}+\boldsymbol      W\boldsymbol     {x}_{t}+\boldsymbol     {b})$。其中，$\boldsymbol      U \in \mathbb{R}^{D \times D}$为状态－状态权重矩阵，$\boldsymbol     {W} \in \mathbb{R}^{D \times M}$为状态－输入权重矩阵，$\boldsymbol     {b} \in \mathbb{R}^D$为偏置向量，$f(\cdot)$是非线性激活函数，通常为Tanh函数（PyTorch中默认）或Logistic函数。简单循环网络如图所示。
 
 ![RNN](实验报告/markdown/结构图/RNN.svg)
 
@@ -44,11 +44,11 @@
 
 为了便于后续模型的介绍，在此首先介绍循环神经网络中的Dropout和双向循环神经网络（Bidirectional Recurrent Neural Network，Bi-RNN）。LSTM和GRU的Dropout与双向技巧与此类似。
 
-在RNN的模型中，一般在深度方向（垂直方向）上插入Dropout层，随机设置一些隐藏状态 $ \boldsymbol h $ 中的值为0，如图所示。
+在RNN的模型中，一般在深度方向（垂直方向）上插入Dropout层，随机设置一些隐藏状态$\boldsymbol h$中的值为0，如图所示。
 
 ![Dropout](实验报告/markdown/结构图/Dropout.svg)
 
-在简单循环网络中，当前神经元的隐藏层状态 $ \boldsymbol {h}_t $ 与当前时刻的输入 $ \boldsymbol     {x}_t $ 相关和上一个时刻的隐藏层状态 $ \boldsymbol     {h}_{t-1} $ 相关。但是在序列数据中，某一数据可能不仅与其上文相关，还与其下文相关，Bi-RNN就是用于解决此问题的。在Bi-RNN中有两个RNN分别按照时间顺序和逆序进行展开，最终的输出为两个RNN输出的拼接，如图所示。
+在简单循环网络中，当前神经元的隐藏层状态$\boldsymbol {h}_t$与当前时刻的输入$\boldsymbol     {x}_t$相关和上一个时刻的隐藏层状态$\boldsymbol     {h}_{t-1}$相关。但是在序列数据中，某一数据可能不仅与其上文相关，还与其下文相关，Bi-RNN就是用于解决此问题的。在Bi-RNN中有两个RNN分别按照时间顺序和逆序进行展开，最终的输出为两个RNN输出的拼接，如图所示。
 
 ![Bidirectional ](实验报告/markdown/结构图/Bidirectional .svg)
 
@@ -56,15 +56,15 @@
 
 LSTM网络是为了解决长程依赖问题所提出的一个循环神经网络的变体。其引入了新的内部状态和门控机制，使网络能够处理长序列信息并更好地对序列信息进行记忆。
 
-首先利用利用当前时刻的输入 $ \boldsymbol     {x}_t $ 相关和上一个时刻的外部状态 $ \boldsymbol {h}_{t-1} $ 进行仿射变换可以得到当前时刻的候选状态 $ \tilde{\boldsymbol {c}}_t $ 。除此以外，还可以得到三个门，分别是遗忘门、输入门和输出门。其中，遗忘门 $ \boldsymbol f_t $ 用于控制上一个时刻的内部状态 $ \boldsymbol  {c}_{t-1} $ 需要遗忘多少信息，输入门 $ \boldsymbol i_t $ 用于控制当前时刻的候选状态 $ \tilde{\boldsymbol  {c}}_t $ 有多少信息需要保存，输出门用于控制当前时刻的内部状态 $ \boldsymbol  {c}_t $ 有多少信息需要输出给外部状态 $ \boldsymbol  {h}_t $ 。
+首先利用利用当前时刻的输入$\boldsymbol     {x}_t$相关和上一个时刻的外部状态$\boldsymbol {h}_{t-1}$进行仿射变换可以得到当前时刻的候选状态$\tilde{\boldsymbol {c}}_t$。除此以外，还可以得到三个门，分别是遗忘门、输入门和输出门。其中，遗忘门$\boldsymbol f_t$用于控制上一个时刻的内部状态$\boldsymbol  {c}_{t-1}$需要遗忘多少信息，输入门$\boldsymbol i_t$用于控制当前时刻的候选状态$\tilde{\boldsymbol  {c}}_t$有多少信息需要保存，输出门用于控制当前时刻的内部状态$\boldsymbol  {c}_t$有多少信息需要输出给外部状态$\boldsymbol  {h}_t$。
 
-利用当前时刻的 $ \tilde{\boldsymbol {c}}_t $ 和上一时刻的内部状态 $ \boldsymbol  {c}_{t-1} $ 分别与遗忘门 $ \boldsymbol f_t $ 和输入门 $ \boldsymbol i_t $ 点乘可以得到当前时刻的内部状态 $ \boldsymbol  {c}_{t} $ 。更进一步，当前时刻的内部状态 $ \boldsymbol  {c}_{t} $ 与输出门 $ \boldsymbol {o}_t $ 点乘可以得到当前时刻的外部状态 $ \boldsymbol  {h}_t $ 。其中，外部状态 $ \boldsymbol  {h} $ 每个时刻都会被重写，因此可以看作一种短期记忆，而内部状态 $ \boldsymbol  {c} $ 借助遗忘门可以将信息保存一段时间，可以看作是一种长短期记忆。
+利用当前时刻的$\tilde{\boldsymbol {c}}_t$和上一时刻的内部状态$\boldsymbol  {c}_{t-1}$分别与遗忘门$\boldsymbol f_t$和输入门$\boldsymbol i_t$点乘可以得到当前时刻的内部状态$\boldsymbol  {c}_{t}$。更进一步，当前时刻的内部状态$\boldsymbol  {c}_{t}$与输出门$\boldsymbol {o}_t$点乘可以得到当前时刻的外部状态$\boldsymbol  {h}_t$。其中，外部状态$\boldsymbol  {h}$每个时刻都会被重写，因此可以看作一种短期记忆，而内部状态$\boldsymbol  {c}$借助遗忘门可以将信息保存一段时间，可以看作是一种长短期记忆。
 
 ![LSTM](实验报告/markdown/结构图/LSTM.svg)
 
 ### 2.1.3 GRU网络
 
-GRU网络可以看作是LSTM网络的一种变体，是一种比LSTM网络更加简单的循环神经网络。首先，由于在LSTM网络中，遗忘门 $ \boldsymbol f $ 和输入门 $ \boldsymbol i $ 是互补关系，具有一定的冗余性。GRU网络直接使用一个更新门 $ \boldsymbol z $ 来控制当前状态需要从历史状态 $ \boldsymbol h $ 中保留多少信息，以及需要从候选状态 $ \tilde{\boldsymbol{h}} $ 中接受多少新信息。此外，与LSTM网络类似，当前时刻的候选状态 $ \tilde{\boldsymbol{h}}_t $ 是当前时刻的输入 $ \boldsymbol     {x}_t $ 相关和上一个时刻的状态 $ \boldsymbol {h}_{t-1} $ 的仿射变换，利用一个重置门 $ \boldsymbol r_t $ 来控制当前时刻的候选状态 $ \tilde{\boldsymbol{h}}_t $ 是否依赖于上一时刻的状态 $ \boldsymbol {h}_{t-1} $ 。
+GRU网络可以看作是LSTM网络的一种变体，是一种比LSTM网络更加简单的循环神经网络。首先，由于在LSTM网络中，遗忘门$\boldsymbol f$和输入门$\boldsymbol i$是互补关系，具有一定的冗余性。GRU网络直接使用一个更新门$\boldsymbol z$来控制当前状态需要从历史状态$\boldsymbol h$中保留多少信息，以及需要从候选状态$\tilde{\boldsymbol{h}}$中接受多少新信息。此外，与LSTM网络类似，当前时刻的候选状态$\tilde{\boldsymbol{h}}_t$是当前时刻的输入$\boldsymbol     {x}_t$相关和上一个时刻的状态$\boldsymbol {h}_{t-1}$的仿射变换，利用一个重置门$\boldsymbol r_t$来控制当前时刻的候选状态$\tilde{\boldsymbol{h}}_t$是否依赖于上一时刻的状态$\boldsymbol {h}_{t-1}$。
 
 ![GRU](实验报告/markdown/结构图/GRU.svg)
 
@@ -88,7 +88,7 @@ GRU网络可以看作是LSTM网络的一种变体，是一种比LSTM网络更加
 
 BPE算法首先从一个包含所有字符的初始词汇表开始，在每次迭代中，BPE算法会统计文本中字符对（或者字节对）的出现频率，然后合并出现频率最高的相邻字符对成为一个新的token。BPE算法会不断迭代这个过程，直到达到预定的词汇表大小或者达到停止条件（如合并次数、词汇表大小等）。合并的过程将不断产生新的子词，形成一个动态变化的词汇表，其中包含单字符、常见组合，以及更长的子词。
 
-WordPiece算法与BPE算法类似，都是基于统计的子词分割算法。但是与BPE算法不同的是，在合并token的过程中，BPE算法选择的是出现频率最高的token对，而WordPiece算法选择的是能够最大化训练集数据似然的token对。具体来说，假设有两个token分别为 $ \text{token}_i $ 和 $ \text{token}_j $ ，WordPiece算法选择 $ \begin{aligned} \frac{P(\text{token}_i\text{token}_j)}{P(\text{token}_i)P(\text{token}_j)} \end{aligned}  $ 最大的token对。
+WordPiece算法与BPE算法类似，都是基于统计的子词分割算法。但是与BPE算法不同的是，在合并token的过程中，BPE算法选择的是出现频率最高的token对，而WordPiece算法选择的是能够最大化训练集数据似然的token对。具体来说，假设有两个token分别为$\text{token}_i$和$\text{token}_j$，WordPiece算法选择$\begin{aligned} \frac{P(\text{token}_i\text{token}_j)}{P(\text{token}_i)P(\text{token}_j)} \end{aligned} $最大的token对。
 
 ## 2.3 Transformer架构与预训练编码模型BERT
 
@@ -100,7 +100,7 @@ Transformer架构由Vaswani等人于2017年提出，其完全抛弃了传统的�
 
 自注意力机制允许模型在处理序列数据时同时考虑序列中各个位置的信息，并赋予不同位置的词语不同的权重，从而更好地捕捉上下文关系。
 
-对于一个输入序列（比如文本句子），首先通过词嵌入或其他方式将每个词或符号转换为一个矩阵表示，记作 $ \boldsymbol  {X}=\left[\boldsymbol  {x}_1, \cdots, \boldsymbol  {x}_N\right] \in \mathbb{R}^{D_{x} \times N} $ 。自注意力机制将输入项通过线性映射转化为三个部分，分别为查询矩阵 $ \boldsymbol{Q}=\boldsymbol{W}_Q \boldsymbol{X} \in \mathbb{R}^{D_k \times N} $ 、键矩阵 $ \boldsymbol{K}=\boldsymbol{W}_K \boldsymbol{X} \in \mathbb{R}^{D_k \times N} $ 和值矩阵 $ \boldsymbol{V}=\boldsymbol{W}_V \boldsymbol{X} \in \mathbb{R}^{D_v \times N} $ 。其中 $ \boldsymbol  {W}_Q \in \mathbb{R}^{D_k \times D_x} $ ， $ \boldsymbol  {W}_K \in \mathbb{R}^{D_k \times D_x} $ ， $ \boldsymbol  {W}_V \in \mathbb{R}^{D_v \times D_x} $ 分别为可学习的线性映射的参数矩阵。通过计算查询矩阵 $ \boldsymbol{Q} $ 与键矩阵 $ \boldsymbol K $ 之间的相似度，得到每个位置对于当前查询矩阵 $ \boldsymbol{Q} $ 的权重分布。通过对每个位置的权重与对应位置的值矩阵 $ \boldsymbol{V} $ 进行加权求和，得到当前位置的自注意力表示。输出矩阵序列可以简写为
+对于一个输入序列（比如文本句子），首先通过词嵌入或其他方式将每个词或符号转换为一个矩阵表示，记作$\boldsymbol  {X}=\left[\boldsymbol  {x}_1, \cdots, \boldsymbol  {x}_N\right] \in \mathbb{R}^{D_{x} \times N}$。自注意力机制将输入项通过线性映射转化为三个部分，分别为查询矩阵$\boldsymbol{Q}=\boldsymbol{W}_Q \boldsymbol{X} \in \mathbb{R}^{D_k \times N}$、键矩阵$\boldsymbol{K}=\boldsymbol{W}_K \boldsymbol{X} \in \mathbb{R}^{D_k \times N}$和值矩阵$\boldsymbol{V}=\boldsymbol{W}_V \boldsymbol{X} \in \mathbb{R}^{D_v \times N}$。其中$\boldsymbol  {W}_Q \in \mathbb{R}^{D_k \times D_x}$，$\boldsymbol  {W}_K \in \mathbb{R}^{D_k \times D_x}$，$\boldsymbol  {W}_V \in \mathbb{R}^{D_v \times D_x}$分别为可学习的线性映射的参数矩阵。通过计算查询矩阵$\boldsymbol{Q}$与键矩阵$\boldsymbol K$之间的相似度，得到每个位置对于当前查询矩阵$\boldsymbol{Q}$的权重分布。通过对每个位置的权重与对应位置的值矩阵$\boldsymbol{V}$进行加权求和，得到当前位置的自注意力表示。输出矩阵序列可以简写为
 $$
 \boldsymbol{H}=\boldsymbol{V} \operatorname{softmax}\left(\frac{\boldsymbol{K}^{\mathrm{T}} \boldsymbol{Q}}{\sqrt{D_k}}\right)
 $$
@@ -108,7 +108,7 @@ $$
 
 ![自注意力](实验报告/markdown/结构图/自注意力.svg)
 
-为了增加模型的表征能力，自注意力通常采用多头机制，将输入序列 $ \boldsymbol X $ 利用不同的线性映射得到多组查询矩阵 $ \boldsymbol{Q} $ 、键矩阵 $ \boldsymbol K $ 和值矩阵 $ \boldsymbol{V} $ 并分别计算多组注意力表示，最后进行拼接或加权汇总。
+为了增加模型的表征能力，自注意力通常采用多头机制，将输入序列$\boldsymbol X$利用不同的线性映射得到多组查询矩阵$\boldsymbol{Q}$、键矩阵$\boldsymbol K$和值矩阵$\boldsymbol{V}$并分别计算多组注意力表示，最后进行拼接或加权汇总。
 
 #### 2. Transformer结构
 
@@ -125,7 +125,7 @@ Transformer由编码器和解码器组成，其中编码器负责将输入序列
   P E_{(p o s, 2 i+1)} & =\cos \left(\frac{\text { pos } }{ 10000^{2 i / d_{\mathrm{model}}}}\right)
   \end{aligned}
   $$
-  其中， $ \text{pos} $ 是位置， $ i $ 是维度， $ d_\text{model}(=512) $ 是模型的维度。这样，位置编码的每个维度对应于一条正弦曲线，如图所示。
+  其中，$\text{pos}$是位置，$i$是维度，$d_\text{model}(=512)$是模型的维度。这样，位置编码的每个维度对应于一条正弦曲线，如图所示。
 
   <img src="实验报告/markdown/数据特征\Positional Encoding.svg" alt="Positional Encoding" style="zoom:67%;" />
 
@@ -139,7 +139,7 @@ BERT由Google在2018年提出，是一种基于Transformer架构的预训练语�
 
 #### 1. BERT的结构
 
-BERT采用了与Transformer的编码器类似的结构，由嵌入层（Embedding Layer）、多个具有相同结构的编码器模块以及一个全连接层组成，具体结构如图所示。 $ \text{BERT}_\text{BASE} $ 和 $ \text{BERT}_\text{LARGE} $ 的结构基本相同，只是 $ \text{BERT}_\text{LARGE} $ 模型的广度和深度均要比 $ \text{BERT}_\text{BASE} $ 大。由于下述实验主要使用预训练编码模型 $ \text{BERT}_\text{BASE} $ ，所以在此只对其进行说明。
+BERT采用了与Transformer的编码器类似的结构，由嵌入层（Embedding Layer）、多个具有相同结构的编码器模块以及一个全连接层组成，具体结构如图所示。$\text{BERT}_\text{BASE}$和$\text{BERT}_\text{LARGE}$的结构基本相同，只是$\text{BERT}_\text{LARGE}$模型的广度和深度均要比$\text{BERT}_\text{BASE}$大。由于下述实验主要使用预训练编码模型$\text{BERT}_\text{BASE}$，所以在此只对其进行说明。
 
 ![BERT](实验报告/markdown/结构图/BERT.svg)
 
@@ -220,31 +220,31 @@ DailyDialog数据集一共有13118个对话，每轮对话大概有7.8轮且每�
 
 ## 3.3 实验细节与结果分析
 
-所有实现均在一台配备RTX 3090显卡（24GB）的Ubuntu计算机上使用PyTorch 2.0完成。由于显存的限制，批量大小均设置为4，学习率设置为 $ 1\mathrm{e}-6 $ 并使用了学习率预热和衰减的方法。
+所有实现均在一台配备RTX 3090显卡（24GB）的Ubuntu计算机上使用PyTorch 2.0完成。由于显存的限制，批量大小均设置为4，学习率设置为$1\mathrm{e}-6$并使用了学习率预热和衰减的方法。
 
 ### 3.3.1 预训练BERT模型对实验结果的影响
 
 首先，使用预训练的BERT模型与LSTM组成神经网络，并利用全量更新的方式对模型进行训练。从图中可以看出，对于分类任务而言，由于预训练模型的使用，在第125个batch时就已经收敛到比较高的水平，在验证集中情感分类准确率达到65.03%。最终在第700个batch达到最高水平，在验证集中情感分类准确率达到66.82%，且在测试集中的情感分类准确率达到63.10%。
 
-![基准](实验报告/markdown/结果图\基准.svg)
+![基准](实验报告\markdown\结果图\基准.svg)
 
 在对BERT参数冻结之后，虽然效果相比于全参微调要差（在验证集中情感分类准确率达到64.80%，且在测试集中的情感分类准确率达到60.59%），但是由于其不用计算和存储BERT模型参数的梯度，所以计算速度和显存占用量都比全参微调要好，也是一种不错的选择。此外，在对BERT参数重置之后，由于没有使用预训练而直接微调，模型一直无法得到准确的预测。从另一个方面也说明，预训练模型中预训练与微调结合的方法是必不可少的。
 
-![预训练BERT模型](实验报告/markdown/结果图\预训练BERT模型.svg)
+![预训练BERT模型](实验报告\markdown\结果图\预训练BERT模型.svg)
 
-此外，还使用了更大规模的 $ \text{BERT}_\text{LARGE} $ 模型进行了比较。由于显存的限制，我冻结了BERT模型的参数，以便进行对比分析。尽管已经对后续神经网络进行了调整，但在投入更多计算资源的情况下，并未观察到性能的显著提升。这表明模型规模的增大并非总能带来更好的效果。对于小型任务，选择规模较小的模型可能会带来更高的效率和更优越的性能，这一点值得注意。
+此外，还使用了更大规模的$\text{BERT}_\text{LARGE}$模型进行了比较。由于显存的限制，我冻结了BERT模型的参数，以便进行对比分析。尽管已经对后续神经网络进行了调整，但在投入更多计算资源的情况下，并未观察到性能的显著提升。这表明模型规模的增大并非总能带来更好的效果。对于小型任务，选择规模较小的模型可能会带来更高的效率和更优越的性能，这一点值得注意。
 
-![模型大小](实验报告/markdown/结果图\模型大小.svg)
+![模型大小](实验报告\markdown\结果图\模型大小.svg)
 
 ### 3.3.2 多任务损失对实验结果的影响
 
-该实验采用了多任务损失函数，要求BERT和LSTM结构同时学习情感分类和行动分类的信息。当将损失平衡因子 $ \alpha $ 设为0时，观察到情感分类准确率下降，表明这种多任务损失对情感分类准确性有所帮助。设置 $ \alpha $ 为0.5时，情感分类准确率达到最高值，在测试集中达到了63.33%。
+该实验采用了多任务损失函数，要求BERT和LSTM结构同时学习情感分类和行动分类的信息。当将损失平衡因子$\alpha$设为0时，观察到情感分类准确率下降，表明这种多任务损失对情感分类准确性有所帮助。设置$\alpha$为0.5时，情感分类准确率达到最高值，在测试集中达到了63.33%。
 
-另外，值得注意的是行动分类的准确率较低。即便将损失平衡因子 $ \alpha $ 设为5，准确率仍有所提升但仍然偏低，在测试集上仅为46.73%。因此，我将多任务损失函数改为仅针对行动进行预测，然而即便如此，行动分类的准确率仍然较低，这表明该模型结构可能不太适用于行动分类任务。
+另外，值得注意的是行动分类的准确率较低。即便将损失平衡因子$\alpha$设为5，准确率仍有所提升但仍然偏低，在测试集上仅为46.73%。因此，我将多任务损失函数改为仅针对行动进行预测，然而即便如此，行动分类的准确率仍然较低，这表明该模型结构可能不太适用于行动分类任务。
 
-![平衡因子](实验报告/markdown/结果图\平衡因子.svg)
+![平衡因子](实验报告\markdown\结果图\平衡因子.svg)
 
-值得说明的是，由于将损失平衡因子 $ \alpha $ 设置为0.5之后情感分类准确率最高，所以后续的实验均设置 $ \alpha=0.5 $ 。
+值得说明的是，由于将损失平衡因子$\alpha$设置为0.5之后情感分类准确率最高，所以后续的实验均设置$\alpha=0.5$。
 
 ### 3.3.3 改进模型的结构对实验结果的影响
 
@@ -252,33 +252,33 @@ DailyDialog数据集一共有13118个对话，每轮对话大概有7.8轮且每�
 
 鉴于LSTM网络只能捕获下文信息，我尝试将其改为BiLSTM网络，以便获取上下文信息。然而，我发现准确率提升并不明显，如图中黄线所示。这可能是因为使用BiLSTM网络后，参数和输出维度都会翻倍。为了解决这一问题，我将BiLSTM网络中的双层结构改为单层，观察到情感识别准确率有所提升。在验证集上达到了69.91%，在测试集上达到了65.91%的准确率。
 
-![bidirectional](实验报告/markdown/结果图\bidirectional.svg)
+![bidirectional](实验报告\markdown\结果图\bidirectional.svg)
 
 #### 2. 更大的模型结构
 
-在此次实验中，LSTM的输出维度为1024，BiLSTM的输出维度为 $ 1024\times 2 = 2048 $ ，而情绪和行动分类个数分别为6类和4类，维度的骤降可能不利于模型的泛化，所以我使用了两层的全连接层，其中添加的隐藏层有512个神经元。但是模型的整体表现不佳。
+在此次实验中，LSTM的输出维度为1024，BiLSTM的输出维度为$1024\times 2 = 2048$，而情绪和行动分类个数分别为6类和4类，维度的骤降可能不利于模型的泛化，所以我使用了两层的全连接层，其中添加的隐藏层有512个神经元。但是模型的整体表现不佳。
 
-![神经网络大小](实验报告/markdown/结果图\神经网络大小.svg)
+![神经网络大小](实验报告\markdown\结果图\神经网络大小.svg)
 
 为了进一步增加模型的表达能力，我采用了BiLSTM模型，并适当增加了全连接层的宽度，将隐藏层的输入维度设为4096，输出维度设为1024，并尝试了不同的Dropout参数进行对比。结果显示，采用更大规模的模型在验证集上的效果更佳，但仍然存在过拟合问题。
 
-![Dropout](实验报告/markdown/结果图\Dropout.svg)
+![Dropout](实验报告\markdown\结果图\Dropout.svg)
 
 #### 3. RNN和GRU
 
 正如之前提到的，除了LSTM网络外，循环神经网络还包括RNN网络和GRU网络等变种。我对比了将LSTM网络替换为其他类型的循环神经网络。结果显示，采用RNN网络的准确率比使用LSTM网络和GRU网络更高。在验证集上，准确率达到了66.59%，在测试集上也有64.54%的准确率。
 
-![循环结构](实验报告/markdown/结果图\循环结构.svg)
+![循环结构](实验报告\markdown\结果图\循环结构.svg)
 
 ### 3.3.4 不使用上下文信息对实验结果的影响
 
-由于预训练编码模型BERT经过大量数据进行无监督预训练，并在多种下游任务中进行微调，其编码能力很强大，所以我也尝试不使用循环神经网络融合上下文信息，直接将BERT的输出传递给前连接层，发现获得比较好的效果。在平衡因子 $ \alpha $ 设为0.5时， $ \text{BERT}_\text{BASE} $ 模型在测试集中的情感分类准确率达到了70.99%，不经过微调的 $ \text{BERT}_\text{LARGE} $ 模型的准确率也有70.16%。此外，从图中可以看出， $ \text{BERT}_\text{BASE} $ 模型刚开始训练就已经达到很高的准确率。
+由于预训练编码模型BERT经过大量数据进行无监督预训练，并在多种下游任务中进行微调，其编码能力很强大，所以我也尝试不使用循环神经网络融合上下文信息，直接将BERT的输出传递给前连接层，发现获得比较好的效果。在平衡因子$\alpha$设为0.5时，$\text{BERT}_\text{BASE}$模型在测试集中的情感分类准确率达到了70.99%，不经过微调的$\text{BERT}_\text{LARGE}$模型的准确率也有70.16%。此外，从图中可以看出，$\text{BERT}_\text{BASE}$模型刚开始训练就已经达到很高的准确率。
 
-![对话上下文](实验报告/markdown/结果图\对话上下文.svg)
+![对话上下文](实验报告\markdown\结果图\对话上下文.svg)
 
-从图中可以看出，使用LSTM提取上下文信息可能会削弱预训练编码模型BERT的表达能力，反而会让分类任务性能有所下降。另外，当平衡因子 $ \alpha $ 设为1时，我们获得了本次实验最佳且最平衡的成绩。在测试集中，情感分类准确率达到了70.99%，行动分类准确率达到了71.80%，总体分类准确率达到了71.40%。
+从图中可以看出，使用LSTM提取上下文信息可能会削弱预训练编码模型BERT的表达能力，反而会让分类任务性能有所下降。另外，当平衡因子$\alpha$设为1时，我们获得了本次实验最佳且最平衡的成绩。在测试集中，情感分类准确率达到了70.99%，行动分类准确率达到了71.80%，总体分类准确率达到了71.40%。
 
-![TheBest](实验报告/markdown/结果图\TheBest.svg)
+![TheBest](实验报告\markdown\结果图\TheBest.svg)
 
 > 为了获得最均衡的成绩，保存的模型是总分类准确率最好的模型而不是情感分类准确率最好的模型
 
@@ -286,7 +286,7 @@ DailyDialog数据集一共有13118个对话，每轮对话大概有7.8轮且每�
 
 除了上述所描述的实验结果，本实验还针对其他参数做了许多消融实验，实验结果如表所示。其中，下划线为影响某个因素中的最好结果，加粗为整个实验中的最好结果。
 
-|      影响因素       |    BERT    |   循环结构    |    线性层数量    | Dropout | 平衡因子 $ \alpha $  |      ALLACC       |    EmotionACC     |      ActACC       |
+|      影响因素       |    BERT    |   循环结构    |    线性层数量    | Dropout | 平衡因子$\alpha$ |      ALLACC       |    EmotionACC     |      ActACC       |
 | :-----------------: | :--------: | :-----------: | :--------------: | :-----: | :--------------: | :---------------: | :---------------: | :---------------: |
 |   预训练BERT模型    |    全参    |     LSTM      |       单层       |    0    |        1         |   <u>0.5470</u>   |   <u>0.6310</u>   |   <u>0.4630</u>   |
 |                     |    冻结    |     LSTM      |       单层       |    0    |        1         |      0.5191       |      0.6059       |      0.4323       |
